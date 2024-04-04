@@ -17,7 +17,7 @@ import scipy as scipy
 
 """
 
-G = nx.DiGraph()
+G = nx.DiGraph() #Directed Graph
 
 [G.add_node(k) for k in ["A", "B", "C", "D", "E", "F", "G"]]
 G.add_edges_from([('G','A'), ('A','G'),('B','A'),
@@ -26,13 +26,16 @@ G.add_edges_from([('G','A'), ('A','G'),('B','A'),
                   ('D','F')])
 pos = nx.spiral_layout(G)
 nx.draw(G, pos, with_labels = True, node_color="red")
+plt.show()
+
 
 """# Run pagerank"""
-
+plt.figure()
 pr1 = nx.pagerank(G)
 print(pr1)
 nx.draw(G, pos, nodelist=list(pr1.keys()), node_size=[round(v * 4000) for v in pr1.values()], 
         with_labels = True, node_color="red")
+plt.show()
 
 """# Adjusting dampening/teleports"""
 
@@ -42,11 +45,12 @@ res = pd.DataFrame({"alpha=0.9": pr_09, "alpha=0.8": pr_08})
 res
 
 """# Personal PageRank"""
-
+plt.figure()
 pr_e = nx.pagerank(G, alpha=0.9, personalization={'A': 1})
 print(pr_e)
 nx.draw(G, pos, nodelist=list(pr_e.keys()), node_size=[round(v * 4000) for v in pr_e.values()], 
         with_labels = True, node_color="red")
+plt.show()
 
 """# MovieLens Recommender
 
@@ -92,7 +96,7 @@ G.add_nodes_from(rdata.movieId, bipartite=1)
 #Add weights for edges
 G.add_weighted_edges_from([(uId, mId,rating) for (uId, mId, rating)
               in rdata[['userId', 'movieId', 'rating']].to_numpy()])
-print(nx.info(G))
+print(G)
 print(nx.is_bipartite(G))
 
 """## Run pagerank"""
