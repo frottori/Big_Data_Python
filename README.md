@@ -1,5 +1,12 @@
 # Big_Data_Python
 
+## Folder Structure
+
+- `algorithms`: the folder to maintain all the algorithms used for data analysis
+- `matplotlib`: the folder to maintain code examples for the python library matplotlib that plots graphs, pie charts etc.
+- `pandas`: the folder to maintain code examples for the python library pandas that reads, analyses and filters data from .csv files
+- `project`: the folder to maintain all the code and datasets needed for the project
+
 ## Project 
 **Εισαγωγή**
 
