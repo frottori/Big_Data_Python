@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv(r"pandas_library/input_files/world_population.csv", index_col = "Country") # set index to col Country
+df = pd.read_csv(r"pandas/input_files/world_population.csv", index_col = "Country") # set index to col Country
 print(df)
 
 df.reset_index(inplace = True)  # reset index (inplace saves the cha)

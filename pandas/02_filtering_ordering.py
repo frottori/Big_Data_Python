@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv('pandas_library/input_files/world_population.csv')
+df = pd.read_csv('pandas/input_files/world_population.csv')
 print(df)
 
 #^ Filtering

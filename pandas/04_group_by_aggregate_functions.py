@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("pandas_lib/input_files/Flavors.csv")
+df = pd.read_csv("pandas/input_files/Flavors.csv")
 print(df)
 
 #^ Aggregating functions
