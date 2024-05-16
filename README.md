@@ -2,8 +2,8 @@
 
 ## Folder Structure
 
-- `Project`: the folder to maintain all the code and datasets needed for the project
 - `Datasets`: the folder to maintain all datasets to conduct the data analysis
+- `Project`: the folder to maintain all the code and datasets needed for the project
 - `algorithms`: the folder to maintain all the algorithms used for data analysis
   - `Pagerank`: Google algorithm that measures the importance of webpages based on the quality and quantity of links pointing to them
   - `Locality Sensitive Hashing - LSH`: algorithm that efficiently approximates similarity search by reducing the dimensionality of data
