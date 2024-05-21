@@ -7,6 +7,7 @@
 - `algorithms`: the folder to maintain all the algorithms used for data analysis
   - `Pagerank`: Google algorithm that measures the importance of webpages based on the quality and quantity of links pointing to them
   - `Locality Sensitive Hashing - LSH`: algorithm that efficiently approximates similarity search by reducing the dimensionality of data
+  - `Clustering`:  similarities between data according to the characteristics found in the data and grouping similar data objects into clusters
 - `matplotlib`: the folder to maintain code examples for the python library matplotlib that plots graphs, pie charts etc.
 - `pandas`: the folder to maintain code examples for the python library pandas that reads, analyses and filters data from .csv files
 
