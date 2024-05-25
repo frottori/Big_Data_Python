@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
 # Read the CSV file into a pandas DataFrame
-df = pd.read_csv('converted_dataset.csv')
+df = pd.read_csv('Datasets/converted_dataset.csv')
 colnames = list(df.columns[1:-1])
 df.head()
 customcmap = ListedColormap(["crimson", "mediumblue", "darkmagenta"])
