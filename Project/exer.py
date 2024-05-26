@@ -5,22 +5,31 @@ from matplotlib.colors import ListedColormap
 
 # Read the CSV file into a pandas DataFrame
 df = pd.read_csv('Datasets/converted_dataset.csv')
+
+
 colnames = list(df.columns[1:-1])
 df.head()
+df['id'] = range(1, len(df) + 1)
+# Colors for the clusters in the scatter plot
 customcmap = ListedColormap(["crimson", "mediumblue", "darkmagenta"])
 
 fig, ax = plt.subplots(figsize=(8, 6))
 # Map the processor categories to integers
-df['processor_color'] = df['processor'].astype('category').cat.codes
+df['processor_int'] = df['processor'].astype('category').cat.codes
+df.to_csv('Datasets/converted_dataset1.csv', index=False)
 
-plt.scatter(x=df['model'], y=df['Price_Euro'], s=150,
-            c=df['processor_color'], 
-            cmap = customcmap)
-ax.set_xlabel(r'x', fontsize=14)
-ax.set_ylabel(r'y', fontsize=14)
+# Scatter plot of the data points
+plt.scatter(x=df['processor_int'], y=df['Price_Euro'], s=1)
+ax.set_xlabel(r'Processor', fontsize=14)
+ax.set_ylabel(r'Price', fontsize=14)
 plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
 plt.show()
+
+
+
+
+
 
 # for i in range(0, len(df)):
 #     model = df.iloc[i]['model']

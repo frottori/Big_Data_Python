@@ -5,6 +5,7 @@ from matplotlib.colors import ListedColormap
 
 blobs = pd.read_csv('Datasets/examples/kmeans_blobs.csv')
 colnames = list(blobs.columns[1:-1])
+print(colnames)
 print(blobs.head())
 
 customcmap = ListedColormap(["crimson", "mediumblue", "darkmagenta"])
@@ -42,7 +43,7 @@ def rsserr(a,b):
     return np.square(np.sum((a-b)**2)) 
 
 for i, centroid in enumerate(range(centroids.shape[0])):
-    err = rsserr(centroids.iloc[centroid,:], df.iloc[36,:])
+    err = rsserr(centroids.iloc[centroid,:], df.iloc[36,:])  #!!!
     print('Error for centroid {0}: {1:.2f}'.format(i, err))
 
 def centroid_assignation(dset, centroids):
