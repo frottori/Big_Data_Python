@@ -101,12 +101,12 @@ if __name__ == "__main__":
     # colnames = list(df.columns[1:-1])
     df['id'] = range(1, len(df) + 1)   # Add a unique identifier for each row
 
-    fig, ax = plt.subplots(figsize=(8, 6))
     # Map the processor categories to integers
     df['processor_int'] = df['processor'].astype('category').cat.codes
 
     # Scatter plot of the data points
-    plt.scatter(x=df['processor_int'], y=df['Price_Euro'], s=1)
+    fig, ax = plt.subplots(figsize=(8, 6))
+    plt.scatter(x=df['processor_int'], y=df['Price_Euro'], s=2)
     ax.set_xlabel(r'Processor', fontsize=14)
     ax.set_ylabel(r'Price', fontsize=14)
     plt.xticks(fontsize=12)
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     fig, ax = plt.subplots(figsize=(8, 6))
     plt.scatter(x=df['processor_int'], y=df['Price_Euro'],  marker = 'o', 
                 c=df['centroid'].astype('category'), 
-                cmap = customcmap, s=3, alpha=0.5)
+                cmap = customcmap, s=2, alpha=0.5)
     plt.scatter(centroids.iloc[:,0], centroids.iloc[:,1],  
                 marker = 's', s=30, c=[0, 1, 2], 
                 cmap = customcmap)
