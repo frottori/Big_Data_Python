@@ -11,6 +11,29 @@ def inr_to_euro(price_inr, exchange_rate=0.011):
     price_euro = price_inr * exchange_rate
     return round(price_euro, 2)
 
+def assoc_rules(df):
+    # Dataframe with all processor characteristics
+    pr = pd.DataFrame(df['processor']);
+    # Remove the thin space character
+    pr = pr.replace('\u2009', '', regex=True)
+    data = list(pr["processor"].apply(lambda x:x.split(",") ))
+
+    te = TransactionEncoder()
+    te_data = te.fit(data).transform(data)
+    pr = pd.DataFrame(te_data,columns=te.columns_)
+
+    # Apriori function to extract frequent itemsets for association rule mining
+    # Support threshold can be mentioned to retrieve frequent itemset
+    freq_items = apriori(pr, min_support = 0.2, use_colnames = True, verbose = 1)
+    print(pr.head())
+
+    # Association rule mining
+    #Let's view our interpretation values using the Associan rule function.
+    #Function to generate association rules from frequent itemsets
+    pr_ar = association_rules(freq_items, metric = "confidence", min_threshold = 0.6)
+    print(pr_ar.head())
+    return
+
 def rsserr(a,b):
     '''
     Calculate the root of sum of squared errors. 
@@ -134,29 +157,12 @@ if __name__ == "__main__":
     plt.yticks(fontsize=12)
     plt.show()
 
-    # Association rules
+    # Association rules for each cluster
+    df0 = df[df['centroid'] == 0]
+    assoc_rules(df0)
 
-    # Dataframe with all processor characteristics
-    pr = pd.DataFrame(df['processor']);
-    # Remove the thin space character
-    pr = pr.replace('\u2009', '', regex=True)
-    print(pr.head())
-    data = list(pr["processor"].apply(lambda x:x.split(",") ))
-    for i in range(5):
-        print(data[i])
+    df1 = df[df['centroid'] == 1]
+    assoc_rules(df1)
 
-    te = TransactionEncoder()
-    te_data = te.fit(data).transform(data)
-    pr = pd.DataFrame(te_data,columns=te.columns_)
-    print(pr.head())
-
-    # Apriori function to extract frequent itemsets for association rule mining
-    # Support threshold can be mentioned to retrieve frequent itemset
-    freq_items = apriori(pr, min_support = 0.1, use_colnames = True, verbose = 1)
-    print(pr.head())
-
-    # Association rule mining
-    #Let's view our interpretation values using the Associan rule function.
-    #Function to generate association rules from frequent itemsets
-    pr_ar = association_rules(freq_items, metric = "confidence", min_threshold = 0.6)
-    print(pr_ar.head())
+    df2 = df[df['centroid'] == 2]
+    assoc_rules(df2)
