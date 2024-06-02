@@ -3,53 +3,132 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
-# Read the CSV file into a pandas DataFrame
-df = pd.read_csv('Datasets/converted_dataset.csv')
+# Function to convert Indian Rupees to Euros and round to 2 decimal places
+def inr_to_euro(price_inr, exchange_rate=0.011):
+    price_inr = float(price_inr.replace('₹', '').replace(',', '').strip())
+    price_euro = price_inr * exchange_rate
+    return round(price_euro, 2)
 
+def rsserr(a,b):
+    '''
+    Calculate the root of sum of squared errors. 
+    a and b are numpy arrays
+    '''
+    return np.square(np.sum((a-b)**2))
 
-colnames = list(df.columns[1:-1])
-df.head()
-df['id'] = range(1, len(df) + 1)
-# Colors for the clusters in the scatter plot
-customcmap = ListedColormap(["crimson", "mediumblue", "darkmagenta"])
+def initiate_centroids(k, dset):
+    '''
+    Select k data points as centroids
+    k: number of centroids
+    dset: pandas dataframe
+    '''
+    centroids = dset.sample(k)
+    return centroids
 
-fig, ax = plt.subplots(figsize=(8, 6))
-# Map the processor categories to integers
-df['processor_int'] = df['processor'].astype('category').cat.codes
-df.to_csv('Datasets/converted_dataset1.csv', index=False)
+def centroid_assignation(dset, centroids):
+    '''
+    Given a dataframe `dset` and a set of `centroids`, we assign each
+    data point in `dset` to a centroid. 
+    - dset - pandas dataframe with observations
+    - centroids - pa das dataframe with centroids
+    '''
+    k = centroids.shape[0]
+    n = dset.shape[0]
+    assignation = []
+    assign_errors = []
 
-# Scatter plot of the data points
-plt.scatter(x=df['processor_int'], y=df['Price_Euro'], s=1)
-ax.set_xlabel(r'Processor', fontsize=14)
-ax.set_ylabel(r'Price', fontsize=14)
-plt.xticks(fontsize=12)
-plt.yticks(fontsize=12)
-plt.show()
+    for obs in range(n):
+        # Estimate error
+        all_errors = np.array([])
+        for centroid in range(k):
+            err = rsserr(centroids.iloc[centroid, :], dset.iloc[obs,:])
+            all_errors = np.append(all_errors, err)
 
+        # Get the nearest centroid and the error
+        nearest_centroid =  np.where(all_errors==np.amin(all_errors))[0].tolist()[0]
+        nearest_centroid_error = np.amin(all_errors)
 
+        # Add values to corresponding lists
+        assignation.append(nearest_centroid)
+        assign_errors.append(nearest_centroid_error)
 
+    return assignation, assign_errors
 
-
-
-# for i in range(0, len(df)):
-#     model = df.iloc[i]['model']
-#     price_eur = df.iloc[i]['Price_Euro']
-#     processor = df.iloc[i]['processor']
-#     ram = df.iloc[i]['ram']
-#     battery = df.iloc[i]['battery']
-#     display = df.iloc[i]['display']
-#     camera = df.iloc[i]['camera']
-#     os = df.iloc[i]['os']
+def kmeans(dset, k=2, tol=1e-4):
+    '''
+    K-means implementationd for a 
+    `dset`:  DataFrame with observations
+    `k`: number of clusters, default k=2
+    `tol`: tolerance=1E-4
+    '''
+    # Let us work in a copy, so we don't mess the original
+    working_dset = dset.copy()
+    # We define some variables to hold the error, the 
+    # stopping signal and a counter for the iterations
+    err = []
+    goahead = True
+    j = 0
     
-#     #wrote in file
-#     with open('output.txt', 'a', encoding='utf-8') as f:
-#         f.write("Model: "+model+"\n")
-#         f.write("Price_Euro: "+str(price_eur)+"\n")
-#         f.write("Processor: "+processor+"\n")
-#         f.write("RAM: "+str(ram)+"\n")
-#         f.write("Battery: "+str(battery)+"\n")
-#         f.write("Display: "+str(display)+"\n")
-#         f.write("Camera: "+str(camera)+"\n")
-#         f.write("OS: "+str(os)+"\n")
-#         f.write("\n")
+    # Step 2: Initiate clusters by defining centroids 
+    centroids = initiate_centroids(k, dset)
 
+    while(goahead):
+        # Step 3 and 4 - Assign centroids and calculate error
+        working_dset['centroid'], j_err = centroid_assignation(working_dset, centroids) 
+        err.append(sum(j_err))
+        
+        # Step 5 - Update centroid position
+        centroids = working_dset.groupby('centroid').agg('mean').reset_index(drop = True)
+
+        # Step 6 - Restart the iteration
+        if j>0:
+            # Is the error less than a tolerance (1E-4)
+            if err[j-1]-err[j]<=tol:
+                goahead = False
+        j+=1
+
+    working_dset['centroid'], j_err = centroid_assignation(working_dset, centroids)
+    centroids = working_dset.groupby('centroid').agg('mean').reset_index(drop = True)
+    return working_dset['centroid'], j_err, centroids
+
+
+if __name__ == "__main__":
+    # Read the dataset
+    df = pd.read_csv('Datasets/smartphones - smartphones.csv')
+    # Add a new column 'Price_Euro' with the converted prices as the third column
+    df.insert(2, 'Price_Euro', df['price'].apply(inr_to_euro))
+
+    # colnames = list(df.columns[1:-1])
+    df['id'] = range(1, len(df) + 1)   # Add a unique identifier for each row
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    # Map the processor categories to integers
+    df['processor_int'] = df['processor'].astype('category').cat.codes
+
+    # Scatter plot of the data points
+    plt.scatter(x=df['processor_int'], y=df['Price_Euro'], s=1)
+    ax.set_xlabel(r'Processor', fontsize=14)
+    ax.set_ylabel(r'Price', fontsize=14)
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.show()
+
+    # Apply the k-means algorithm to the dataset
+    np.random.seed(42)
+    k = 3 # Number of clusters (for low range processors, medium range processors, and high range processors)
+    df['centroid'], df['error'], centroids =  kmeans(df[['processor_int','Price_Euro']], k)
+
+    # Colors for the clusters in the scatter plot
+    customcmap = ListedColormap(["crimson", "mediumblue", "darkmagenta"])
+    fig, ax = plt.subplots(figsize=(8, 6))
+    plt.scatter(x=df['processor_int'], y=df['Price_Euro'],  marker = 'o', 
+                c=df['centroid'].astype('category'), 
+                cmap = customcmap, s=3, alpha=0.5)
+    plt.scatter(centroids.iloc[:,0], centroids.iloc[:,1],  
+                marker = 's', s=30, c=[0, 1, 2], 
+                cmap = customcmap)
+    ax.set_xlabel(r'Processor', fontsize=14)
+    ax.set_ylabel(r'Price', fontsize=14)
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.show()
