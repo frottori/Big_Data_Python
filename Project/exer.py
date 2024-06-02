@@ -145,14 +145,18 @@ if __name__ == "__main__":
     for i in range(5):
         print(data[i])
 
-    a = TransactionEncoder()
-    a_data = a.fit(data).transform(data)
-    pr = pd.DataFrame(a_data,columns=a.columns_)
+    te = TransactionEncoder()
+    te_data = te.fit(data).transform(data)
+    pr = pd.DataFrame(te_data,columns=te.columns_)
     print(pr.head())
 
-    pr = apriori(pr, min_support = 0.2, use_colnames = True, verbose = 1)
+    # Apriori function to extract frequent itemsets for association rule mining
+    # Support threshold can be mentioned to retrieve frequent itemset
+    freq_items = apriori(pr, min_support = 0.1, use_colnames = True, verbose = 1)
     print(pr.head())
 
+    # Association rule mining
     #Let's view our interpretation values using the Associan rule function.
-    pr_ar = association_rules(pr, metric = "confidence", min_threshold = 0.1)
+    #Function to generate association rules from frequent itemsets
+    pr_ar = association_rules(freq_items, metric = "confidence", min_threshold = 0.6)
     print(pr_ar.head())
