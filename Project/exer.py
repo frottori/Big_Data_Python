@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd 
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
 
 # Function to convert Indian Rupees to Euros and round to 2 decimal places
 def inr_to_euro(price_inr, exchange_rate=0.011):
@@ -91,8 +93,7 @@ def kmeans(dset, k=2, tol=1e-4):
     centroids = working_dset.groupby('centroid').agg('mean').reset_index(drop = True)
     return working_dset['centroid'], j_err, centroids
 
-
-if __name__ == "__main__":
+if __name__ == "__main__": 
     # Read the dataset
     df = pd.read_csv('Datasets/smartphones - smartphones.csv')
     # Add a new column 'Price_Euro' with the converted prices as the third column
@@ -132,3 +133,26 @@ if __name__ == "__main__":
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
     plt.show()
+
+    # Association rules
+
+    # Dataframe with all processor characteristics
+    pr = pd.DataFrame(df['processor']);
+    # Remove the thin space character
+    pr = pr.replace('\u2009', '', regex=True)
+    print(pr.head())
+    data = list(pr["processor"].apply(lambda x:x.split(",") ))
+    for i in range(5):
+        print(data[i])
+
+    a = TransactionEncoder()
+    a_data = a.fit(data).transform(data)
+    pr = pd.DataFrame(a_data,columns=a.columns_)
+    print(pr.head())
+
+    pr = apriori(pr, min_support = 0.2, use_colnames = True, verbose = 1)
+    print(pr.head())
+
+    #Let's view our interpretation values using the Associan rule function.
+    pr_ar = association_rules(pr, metric = "confidence", min_threshold = 0.1)
+    print(pr_ar.head())
