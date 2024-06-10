@@ -9,12 +9,7 @@ from mlxtend.frequent_patterns import apriori, association_rules
 ASSOCIATION RULES
 '''
 
-def assoc_rules(df, m_sup=0.2, m_thr=0.6):
-    # Dataframe with all processor characteristics
-    pr = pd.DataFrame(df['processor']);
-    # Remove the thin space character
-    pr = pr.replace('\u2009', '', regex=True)
-    data = list(pr["processor"].apply(lambda x:x.split(",") ))
+def assoc_rules(data, m_sup, m_thr):
 
     te = TransactionEncoder()
     te_data = te.fit(data).transform(data)
@@ -23,13 +18,12 @@ def assoc_rules(df, m_sup=0.2, m_thr=0.6):
     # Apriori function to extract frequent itemsets for association rule mining
     # Support threshold can be mentioned to retrieve frequent itemset
     freq_items = apriori(pr, min_support = m_sup, use_colnames = True, verbose = 1)
-    print(pr.head())
 
     # Association rule mining
-    #Let's view our interpretation values using the Associan rule function.
+    #Let's view our interpretation values using the Association rule function.
     #Function to generate association rules from frequent itemsets
     pr_ar = association_rules(freq_items, metric = "confidence", min_threshold = m_thr)
-    return pr_ar
+    return freq_items, pr_ar
 
 '''
 K-MEANS ALGORITHM/CLUSTERING
@@ -182,36 +176,35 @@ def price_processor_analysis(df):
 
     # Apply the k-means algorithm to the dataset
     np.random.seed(42)  # Set seed to 42 for reproducibility
-    k = 3               # Number of clusters (for low range processors, medium range processors, and high range processors)
+    k = 4               # Number of clusters (for low range processors, medium range processors, and high range processors)
     df['centroid'], df['error'], centroids =  kmeans(df[['processor_type_code','Price_Euro']], k)
 
     # Colors for the clusters in the scatter plot
-    customcmap = ListedColormap(["crimson", "mediumblue", "darkmagenta"])
+    customcmap = ListedColormap(["crimson", "mediumblue", "darkmagenta", "forestgreen"])
     fig, ax = plt.subplots(figsize=(8, 6))
     plt.scatter(x=df['processor_type_code'], y=df['Price_Euro'],  marker = 'o', 
                 c=df['centroid'].astype('category'), 
                 cmap = customcmap, s=2, alpha=0.5)
     plt.scatter(centroids.iloc[:,0], centroids.iloc[:,1],  
-                marker = 's', s=30, c=[0, 1, 2], 
+                marker = 's', s=30, c=[0, 1, 2, 3], 
                 cmap = customcmap)
     ax.set_xlabel(r'Processor', fontsize=14)
     ax.set_ylabel(r'Price', fontsize=14)
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
     plt.show()
+    return df
 
-    # Association rules for each cluster
-    df0 = df[df['centroid'] == 0]
-    pr_ar0 = assoc_rules(df0)
-    print(pr_ar0.head())
+def assoc_mining_proc(df, c, min_sup=0.2, min_thr=0.6):
+    df = df[df['centroid'] == c]
+    # Dataframe with all processor characteristics
+    pr = pd.DataFrame(df['processor']);
+    # Remove the thin space character
+    pr = pr.replace('\u2009', '', regex=True)
+    data = list(pr["processor"].apply(lambda x:x.split(",") ))
 
-    df1 = df[df['centroid'] == 1]
-    pr_ar1 = assoc_rules(df1)
-    print(pr_ar1.head())
-
-    df2 = df[df['centroid'] == 2]
-    pr_ar2 = assoc_rules(df2)
-    print(pr_ar2.head())
+    freq_items, pr_ar = assoc_rules(data, min_sup, min_thr)
+    return freq_items, pr_ar
 
 if __name__ == "__main__": 
     # Read the dataset
@@ -219,10 +212,30 @@ if __name__ == "__main__":
     # Add a new column 'Price_Euro' with the converted prices as the third column
     df.insert(2, 'Price_Euro', df['price'].apply(inr_to_euro))
     # Add a unique identifier for each row
-    df['id'] = range(1, len(df) + 1)   # Add a unique identifier for each row
+    df['id'] = range(1, len(df) + 1)  
 
     # Map the processor categories to integers using one-hot encoding (same processor type will have the same code)
     df = one_hot_enco_proc(df)
 
     #! 1. Cluster Analysis and Association Rules for Price and Processor_type
     price_processor_analysis(df)
+
+    #^ Low-end phones
+    freq_items3, pr_ar3 = assoc_mining_proc(df, 3, 0.1, 0.1)
+    print(freq_items3.head())
+    print(pr_ar3.head())
+
+    #^ Mid-range phones
+    freq_items0, pr_ar0 = assoc_mining_proc(df, 0, 0.1, 0.1)
+    print(freq_items3.head())
+    print(pr_ar3.head())
+
+    #^ High-end phones
+    freq_items1, pr_ar1 = assoc_mining_proc(df, 1, 0.1, 0.1)
+    print(freq_items1.head())
+    print(pr_ar1.head())
+
+    #^ Very high-end phones (Luxury phones)
+    freq_items2, pr_ar2 = assoc_mining_proc(df, 2, 0.1, 0.1)
+    print(freq_items2.head())
+    print(pr_ar2.head())
