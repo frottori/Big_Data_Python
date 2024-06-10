@@ -39,11 +39,8 @@ df = pd.DataFrame(data, columns=['processor_type', 'core_type', 'clock_speed'])
 # Remove any additional spaces around the processor_type
 df['processor_type'] = df['processor_type'].str.strip().str.replace('  ', ' ')
 
-# Perform one-hot encoding on three columns
-df_one_hot = pd.get_dummies(df, columns=['processor_type', 'core_type', 'clock_speed'])
-
 # Convert one-hot encoded columns to integer codes
-df['processor_type_code'] = pd.factorize(df['processor_type'])[0]
+df['processor_type_code'] = pd.factorize(df['processor_type'])[0] # [0]: Return the codes [1]: Return the unique values
 df['core_type_code'] = pd.factorize(df['core_type'])[0]
 df['clock_speed_code'] = pd.factorize(df['clock_speed'])[0]
 

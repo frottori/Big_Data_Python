@@ -5,13 +5,11 @@ from matplotlib.colors import ListedColormap
 from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import apriori, association_rules
 
-# Function to convert Indian Rupees to Euros and round to 2 decimal places
-def inr_to_euro(price_inr, exchange_rate=0.011):
-    price_inr = float(price_inr.replace('₹', '').replace(',', '').strip())
-    price_euro = price_inr * exchange_rate
-    return round(price_euro, 2)
+'''
+ASSOCIATION RULES
+'''
 
-def assoc_rules(df):
+def assoc_rules(df, m_sup=0.2, m_thr=0.6):
     # Dataframe with all processor characteristics
     pr = pd.DataFrame(df['processor']);
     # Remove the thin space character
@@ -24,15 +22,18 @@ def assoc_rules(df):
 
     # Apriori function to extract frequent itemsets for association rule mining
     # Support threshold can be mentioned to retrieve frequent itemset
-    freq_items = apriori(pr, min_support = 0.2, use_colnames = True, verbose = 1)
+    freq_items = apriori(pr, min_support = m_sup, use_colnames = True, verbose = 1)
     print(pr.head())
 
     # Association rule mining
     #Let's view our interpretation values using the Associan rule function.
     #Function to generate association rules from frequent itemsets
-    pr_ar = association_rules(freq_items, metric = "confidence", min_threshold = 0.6)
-    print(pr_ar.head())
-    return
+    pr_ar = association_rules(freq_items, metric = "confidence", min_threshold = m_thr)
+    return pr_ar
+
+'''
+K-MEANS ALGORITHM/CLUSTERING
+'''
 
 def rsserr(a,b):
     '''
@@ -116,21 +117,63 @@ def kmeans(dset, k=2, tol=1e-4):
     centroids = working_dset.groupby('centroid').agg('mean').reset_index(drop = True)
     return working_dset['centroid'], j_err, centroids
 
-if __name__ == "__main__": 
-    # Read the dataset
-    df = pd.read_csv('Datasets/smartphones - smartphones.csv')
-    # Add a new column 'Price_Euro' with the converted prices as the third column
-    df.insert(2, 'Price_Euro', df['price'].apply(inr_to_euro))
+'''MY FUNCTIONS'''
+# Function to convert Indian Rupees to Euros and round to 2 decimal places
+def inr_to_euro(price_inr, exchange_rate=0.011):
+    price_inr = float(price_inr.replace('₹', '').replace(',', '').strip())
+    price_euro = price_inr * exchange_rate
+    return round(price_euro, 2)
 
-    # colnames = list(df.columns[1:-1])
-    df['id'] = range(1, len(df) + 1)   # Add a unique identifier for each row
+# Function to extract the required information for processor column
+def extract_processor_info(processor):
+    parts = processor.split(',')  # Split the string by comma
 
-    # Map the processor categories to integers
-    df['processor_int'] = df['processor'].astype('category').cat.codes
+    # Remove the word "Processor" if found in any part
+    cleaned_parts = []
+    for part in parts:
+        cleaned_part = part.replace('Processor', '').strip()
+        cleaned_parts.append(cleaned_part)
+    parts = cleaned_parts
+    
+    processor_type = parts[0].strip()
+    # if there is a second part, extract the core type
+    if len(parts) > 1:
+        core_type = parts[1].strip()
+    else:
+        core_type = 'N/A'
+    # if there is a third part, extract the clock speed
+    if len(parts) > 2:
+        clock_speed = parts[2].strip()
+    else:
+        clock_speed = 'N/A'
+    return processor_type, core_type, clock_speed
 
-    # Scatter plot of the data points
+def one_hot_encoding(df):
+    # Extract information into a list of tuples
+    data = []
+    for p in df['processor']:
+        info = extract_processor_info(p)
+        data.append(info)
+
+    # Create DataFrame
+    df_proc = pd.DataFrame(data, columns=['processor_type', 'core_type', 'clock_speed'])
+
+    # Remove any additional spaces around the processor_type
+    df_proc['processor_type'] = df_proc['processor_type'].str.strip().str.replace('  ', ' ')
+
+    # Add the extracted columns to the original DataFrame
+    df[['processor_type', 'core_type', 'clock_speed']] = df_proc
+
+    # Convert columns to integer codes 
+    df['processor_type_code'] = pd.factorize(df['processor_type'])[0] # [0]: Return the codes [1]: Return the unique values
+    df['core_type_code'] = pd.factorize(df['core_type'])[0]
+    df['clock_speed_code'] = pd.factorize(df['clock_speed'])[0]
+    return df
+
+def price_processor_analysis(df):
+      # Scatter plot of the data points
     fig, ax = plt.subplots(figsize=(8, 6))
-    plt.scatter(x=df['processor_int'], y=df['Price_Euro'], s=2)
+    plt.scatter(x=df['processor_type_code'], y=df['Price_Euro'], s=2)
     ax.set_xlabel(r'Processor', fontsize=14)
     ax.set_ylabel(r'Price', fontsize=14)
     plt.xticks(fontsize=12)
@@ -138,14 +181,14 @@ if __name__ == "__main__":
     plt.show()
 
     # Apply the k-means algorithm to the dataset
-    np.random.seed(42)
-    k = 3 # Number of clusters (for low range processors, medium range processors, and high range processors)
-    df['centroid'], df['error'], centroids =  kmeans(df[['processor_int','Price_Euro']], k)
+    np.random.seed(42)  # Set seed to 42 for reproducibility
+    k = 3               # Number of clusters (for low range processors, medium range processors, and high range processors)
+    df['centroid'], df['error'], centroids =  kmeans(df[['processor_type_code','Price_Euro']], k)
 
     # Colors for the clusters in the scatter plot
     customcmap = ListedColormap(["crimson", "mediumblue", "darkmagenta"])
     fig, ax = plt.subplots(figsize=(8, 6))
-    plt.scatter(x=df['processor_int'], y=df['Price_Euro'],  marker = 'o', 
+    plt.scatter(x=df['processor_type_code'], y=df['Price_Euro'],  marker = 'o', 
                 c=df['centroid'].astype('category'), 
                 cmap = customcmap, s=2, alpha=0.5)
     plt.scatter(centroids.iloc[:,0], centroids.iloc[:,1],  
@@ -159,10 +202,27 @@ if __name__ == "__main__":
 
     # Association rules for each cluster
     df0 = df[df['centroid'] == 0]
-    assoc_rules(df0)
+    pr_ar0 = assoc_rules(df0)
+    print(pr_ar0.head())
 
     df1 = df[df['centroid'] == 1]
-    assoc_rules(df1)
+    pr_ar1 = assoc_rules(df1)
+    print(pr_ar1.head())
 
     df2 = df[df['centroid'] == 2]
-    assoc_rules(df2)
+    pr_ar2 = assoc_rules(df2)
+    print(pr_ar2.head())
+
+if __name__ == "__main__": 
+    # Read the dataset
+    df = pd.read_csv('Datasets/smartphones - smartphones.csv')
+    # Add a new column 'Price_Euro' with the converted prices as the third column
+    df.insert(2, 'Price_Euro', df['price'].apply(inr_to_euro))
+    # Add a unique identifier for each row
+    df['id'] = range(1, len(df) + 1)   # Add a unique identifier for each row
+
+    # Map the processor categories to integers using one-hot encoding (same processor type will have the same code)
+    df = one_hot_encoding(df)
+
+    #! 1. Cluster Analysis and Association Rules for Price and Processor
+    price_processor_analysis(df)
