@@ -148,7 +148,7 @@ def extract_processor_info(processor):
         clock_speed = 'N/A'
     return processor_type, core_type, clock_speed
 
-def one_hot_encoding(df):
+def one_hot_enco_proc(df):
     # Extract information into a list of tuples
     data = []
     for p in df['processor']:
@@ -171,7 +171,7 @@ def one_hot_encoding(df):
     return df
 
 def price_processor_analysis(df):
-      # Scatter plot of the data points
+    # Scatter plot of the data points
     fig, ax = plt.subplots(figsize=(8, 6))
     plt.scatter(x=df['processor_type_code'], y=df['Price_Euro'], s=2)
     ax.set_xlabel(r'Processor', fontsize=14)
@@ -222,7 +222,7 @@ if __name__ == "__main__":
     df['id'] = range(1, len(df) + 1)   # Add a unique identifier for each row
 
     # Map the processor categories to integers using one-hot encoding (same processor type will have the same code)
-    df = one_hot_encoding(df)
+    df = one_hot_enco_proc(df)
 
-    #! 1. Cluster Analysis and Association Rules for Price and Processor
+    #! 1. Cluster Analysis and Association Rules for Price and Processor_type
     price_processor_analysis(df)
