@@ -5,13 +5,13 @@
 - `Datasets`: the folder to maintain all datasets to conduct the data analysis
 - `Project`: the folder to maintain all the code needed for the project
 - `algorithms`: the folder to maintain all the algorithms used for data analysis
-  - `One Hot Encoding`:
-  - `Association Rules`:
-  - `Decision Trees`:
+  - `One Hot Encoding`: label encoding where we will assign a numerical value to labels.
+  - `Association Rules`: patterns in data that reveal the frequent co-occurrence of items to identify relationships between variables in a dataset.
+  - `Decision Trees`: tree-like structures for classification and regression tasks, where each node represents a feature, and each branch represents a decision based on that feature.
   - `kMeans - Clustering`: similarities between data according to the characteristics found in the data and grouping similar data objects into clusters.
   - `Locality Sensitive Hashing - LSH`: algorithm that efficiently approximates similarity search by reducing the dimensionality of data
   - `Pagerank`: Google algorithm that measures the importance of webpages based on the quality and quantity of links pointing to them
-  - `Recommender Systems`:  
+  - `Recommender Systems`: algorithm to predict and suggest items or content that users may be interested in based on their past behavior, preferences, and similarities with other users. 
 - `matplotlib`: the folder to maintain code examples for the python library matplotlib that plots graphs, pie charts etc.
 - `pandas`: the folder to maintain code examples for the python library pandas that reads, analyses and filters data from .csv files
 
