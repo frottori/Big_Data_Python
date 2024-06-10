@@ -5,9 +5,13 @@
 - `Datasets`: the folder to maintain all datasets to conduct the data analysis
 - `Project`: the folder to maintain all the code needed for the project
 - `algorithms`: the folder to maintain all the algorithms used for data analysis
-  - `Pagerank`: Google algorithm that measures the importance of webpages based on the quality and quantity of links pointing to them
+  - `One Hot Encoding`:
+  - `Association Rules`:
+  - `Decision Trees`:
+  - `kMeans - Clustering`: similarities between data according to the characteristics found in the data and grouping similar data objects into clusters.
   - `Locality Sensitive Hashing - LSH`: algorithm that efficiently approximates similarity search by reducing the dimensionality of data
-  - `Clustering`:  similarities between data according to the characteristics found in the data and grouping similar data objects into clusters
+  - `Pagerank`: Google algorithm that measures the importance of webpages based on the quality and quantity of links pointing to them
+  - `Recommender Systems`:  
 - `matplotlib`: the folder to maintain code examples for the python library matplotlib that plots graphs, pie charts etc.
 - `pandas`: the folder to maintain code examples for the python library pandas that reads, analyses and filters data from .csv files
 
@@ -57,7 +61,7 @@ kaggle Datasets:  https://www.kaggle.com/datasets
 1. Το έγγραφο της τελικής αναφοράς της εργασία σε μορφή pdf
 1. Τον κώδικα Python είτε σε αρχείο . ipynb είτε σε αρχείο .py (είτε και στα δύο)
 
-**Καταληκτική ημερομηνία υποβολής 12.06.2024 @ 11:59μμ** <br><br>
+**Καταληκτική ημερομηνία υποβολής 21.06.2024 @ 11:59μμ** <br><br>
 **Τελική βαθμολογία**
 
 Υπενθύμιση πως η τελική βαθμολογία θα γίνει ως εξής

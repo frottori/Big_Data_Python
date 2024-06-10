@@ -1,0 +1,27 @@
+# Given data
+processors = [
+    'Exynos 1330, Octa Core, 2.4GHz ',
+    'Snapdragon  695, Octa Core, 2.2GHz ',
+    'Dimensity 1080, Octa Core, 2.6GHz ',
+    'Snapdragon  750G, Octa Core, 2.2GHz ',
+    'Bionic A15, Hexa Core, 3.22GHz ',
+    'Snapdragon 778G Plus, Octa Core, 2.5GHz ',
+    'Dimensity  1300, Octa Core, 3GHz ',
+    'Dimensity 700 5G, Octa Core, 2.2GHz ',
+    'Helio P35, Octa Core, 2.3GHz ',
+    'Snapdragon 8+ Gen1, Octa Core, 3.2GHz ',
+    'Dimensity 8100 Max, Octa Core, 2.85GHz ',
+    'Helio G70, Octa Core, 2GHz ',
+    'Snapdragon  8+ Gen1, Octa Core, 3.2GHz ',
+    'Dimensity 1300, Octa Core, 3GHz ',
+    'Snapdragon 695 , Octa Core, 2.2GHz ',
+    'Snapdragon 4 Gen 1, Octa Core, 2GHz ',
+    'Dimensity 9000 Plus, Octa Core, 3.2GHz ',
+    'Snapdragon 865, Octa Core, 2.84GHz ',
+    'Bionic  A16, Hexa Core, 3.46GHz',
+    'Dimensity  900, Octa Core, 2GHz ',
+    'Snapdragon  8 Gen2, Octa Core, 3.2GHz ',
+    'Snapdragon 778G, Octa Core, 2.4GHz ',
+    'Dimensity  930, Octa Core, 2.2GHz ',
+    'A13 Bionic, Hexa Core, 2.65GHz '
+]
