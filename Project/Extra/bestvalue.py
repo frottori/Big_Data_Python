@@ -4,8 +4,8 @@
 # It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python
 # For example, here's several helpful packages to load
 
-import numpy as np # linear algebra
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import numpy as np 
+import pandas as pd 
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -24,7 +24,7 @@ df_smartphones = df_smartphones.sort_values(by=['price_per_rating'], ascending=T
 
 df_smartphones = df_smartphones.loc[(df_smartphones.rating >= 84.0)]
 df_smartphones = df_smartphones.head(n=4)
-df_smartphones
+print(df_smartphones)
 
 plt.figure(figsize=(4,3))
 sns.scatterplot(data=df_smartphones, x='price', y='price_per_rating', hue='model')
@@ -32,3 +32,4 @@ plt.title('Best deals (value for money)')
 plt.xlabel('price [Indian Rupee]')
 plt.ylabel('price per unit of rating')
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.show()
