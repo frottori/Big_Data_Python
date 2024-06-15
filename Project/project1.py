@@ -332,7 +332,7 @@ if __name__ == "__main__":
     df = one_hot_enco_ram(df)
     print(df.head())
 
-    #! 1. Cluster Analysis and Association Rules for Price and Ram_type
+    #! 2. Cluster Analysis and Association Rules for Price and Ram_type
     price_ram_analysis(df)
 
     #^ Low-end phones
