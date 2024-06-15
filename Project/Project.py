@@ -227,8 +227,8 @@ if __name__ == "__main__":
 
     #^ Mid-range phones
     freq_items0, pr_ar0 = assoc_mining_proc(df, 0, 0.1, 0.1)
-    print(freq_items3.head())
-    print(pr_ar3.head())
+    print(freq_items0.head())
+    print(pr_ar0.head())
 
     #^ High-end phones
     freq_items1, pr_ar1 = assoc_mining_proc(df, 1, 0.1, 0.1)
