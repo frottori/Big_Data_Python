@@ -322,11 +322,11 @@ if __name__ == "__main__":
 
 
     # Read the dataset
-    df = pd.read_csv('Datasets/smartphones - smartphones.csv')
+    #df = pd.read_csv('Datasets/smartphones - smartphones.csv')
     # Add a new column 'Price_Euro' with the converted prices as the third column
-    df.insert(2, 'Price_Euro', df['price'].apply(inr_to_euro))
+    #df.insert(2, 'Price_Euro', df['price'].apply(inr_to_euro))
     # Add a unique identifier for each row
-    df['id'] = range(1, len(df) + 1)  
+    #df['id'] = range(1, len(df) + 1)  
 
     # Map the ran categories to integers using one-hot encoding (same ra type will have the same code)
     df = one_hot_enco_ram(df)
