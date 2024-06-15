@@ -142,7 +142,7 @@ def extract_processor_info(processor):
         clock_speed = 'N/A'
     return processor_type, core_type, clock_speed
 
-# Function to extract the required information for processor column
+# Function to extract the required information for ram column
 def extract_ram_info(ram):
     parts = ram.split(',')  # Split the string by comma
     cleaned_parts = []
@@ -245,7 +245,7 @@ def price_ram_analysis(df):
 
     # Apply the k-means algorithm to the dataset
     np.random.seed(42)  # Set seed to 42 for reproducibility
-    k = 4               # Number of clusters (for low range processors, medium range processors, and high range processors)
+    k = 4               # Number of clusters (for low range ram, medium range ram, and high range ram)
     df['centroid'], df['error'], centroids =  kmeans(df[['ram_type_code','Price_Euro']], k)
 
     # Colors for the clusters in the scatter plot
@@ -277,7 +277,7 @@ def assoc_mining_proc(df, c, min_sup=0.2, min_thr=0.6):
 
 def assoc_mining_ram(df, c, min_sup=0.2, min_thr=0.6):
     df = df[df['centroid'] == c]
-    # Dataframe with all processor characteristics
+    # Dataframe with all ram characteristics
     pr = pd.DataFrame(df['ram'])
     # Remove the thin space character
     pr = pr.replace('\u2009', '', regex=True)
@@ -328,11 +328,11 @@ if __name__ == "__main__":
     # Add a unique identifier for each row
     df['id'] = range(1, len(df) + 1)  
 
-    # Map the processor categories to integers using one-hot encoding (same processor type will have the same code)
+    # Map the ran categories to integers using one-hot encoding (same ra type will have the same code)
     df = one_hot_enco_ram(df)
     print(df.head())
 
-    #! 1. Cluster Analysis and Association Rules for Price and Processor_type
+    #! 1. Cluster Analysis and Association Rules for Price and Ram_type
     price_ram_analysis(df)
 
     #^ Low-end phones
