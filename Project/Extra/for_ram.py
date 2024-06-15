@@ -190,8 +190,9 @@ def price_ram_analysis(df):
 def assoc_mining_ram(df, c, min_sup=0.2, min_thr=0.6):
     df = df[df['centroid'] == c]
     # Dataframe with all processor characteristics
+    df['ram'] = df['ram'].replace('inbuilt', '', regex=True)
     pr = pd.DataFrame(df['ram'])
-    # Remove the thin space character
+    # Remove the thin space characterS
     pr = pr.replace('\u2009', '', regex=True)
     data = list(pr["ram"].apply(lambda x:x.split(",") ))
 
@@ -212,7 +213,7 @@ if __name__ == "__main__":
 
     #! 1. Cluster Analysis and Association Rules for Price and Processor_type
     price_ram_analysis(df)
-
+    
     #^ Low-end phones
     f_r3, ram_ar3 = assoc_mining_ram(df, 3, 0.1, 0.1)
     print(f_r3.head())

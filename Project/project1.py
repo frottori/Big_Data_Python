@@ -278,6 +278,7 @@ def assoc_mining_proc(df, c, min_sup=0.2, min_thr=0.6):
 def assoc_mining_ram(df, c, min_sup=0.2, min_thr=0.6):
     df = df[df['centroid'] == c]
     # Dataframe with all ram characteristics
+    df['ram'] = df['ram'].replace('inbuilt', '', regex=True)
     pr = pd.DataFrame(df['ram'])
     # Remove the thin space character
     pr = pr.replace('\u2009', '', regex=True)
