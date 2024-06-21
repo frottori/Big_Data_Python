@@ -20,7 +20,7 @@
 # Project 
 **Εισαγωγή**
 
-Η εργασία έχει ως στόχο την ανάλυση μεγάλων δεδομένων και την παρουσίαση των αποτελεσμάτων σας. Η εργασία θα περιλαμβάνει 2 μέρη, το πρώτο μέρος θα είναι συγγραφή μιας αναφοράς 6 σελίδων και ενώ το δεύτερο η δημιουργία κώδικα για την εκτέλεση των πειραμάτων σας.Η ημερομηνία υποβολής της θα είναι η 12η Ιουνίου 2024.
+Η εργασία έχει ως στόχο την ανάλυση μεγάλων δεδομένων και την παρουσίαση των αποτελεσμάτων σας. Η εργασία θα περιλαμβάνει 2 μέρη, το πρώτο μέρος θα είναι συγγραφή μιας αναφοράς 6 σελίδων και ενώ το δεύτερο η δημιουργία κώδικα για την εκτέλεση των πειραμάτων σας.Η ημερομηνία υποβολής της θα είναι η 21η Ιουνίου 2024.
 
 **Γραπτή αναφορά**
 
@@ -50,13 +50,13 @@
 
 Για την εκπόνηση της εργασίας μπορείτε να χρησιμοποιήσετε δεδομένα και από τις εξής ενδεικτικές πηγές:
 
-Google Data set search:  https://datasetsearch.research.google.com/ 
+[Google Data set search](https://datasetsearch.research.google.com/)
 
-KDnuggets Datasets:  https://www.kdnuggets.com/datasets/index.html 
+[KDnuggets Datasets](https://www.kdnuggets.com/datasets/index.html)
 
-kaggle Datasets:  https://www.kaggle.com/datasets 
+[kaggle Datasets](https://www.kaggle.com/datasets)
 
-144 libraries of datasets:  https://data.world/datasets/library 
+[144 libraries of datasets](https://data.world/datasets/library)
 
 **Τι θα υποβάλλετε**
 
