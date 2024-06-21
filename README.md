@@ -50,13 +50,13 @@
 
 Για την εκπόνηση της εργασίας μπορείτε να χρησιμοποιήσετε δεδομένα και από τις εξής ενδεικτικές πηγές:
 
-[Google Data set search](https://datasetsearch.research.google.com/)
+- [Google Data set search](https://datasetsearch.research.google.com/)
 
-[KDnuggets Datasets](https://www.kdnuggets.com/datasets/index.html)
+- [KDnuggets Datasets](https://www.kdnuggets.com/datasets/index.html)
 
-[kaggle Datasets](https://www.kaggle.com/datasets)
+- [kaggle Datasets](https://www.kaggle.com/datasets)
 
-[144 libraries of datasets](https://data.world/datasets/library)
+- [144 libraries of datasets](https://data.world/datasets/library)
 
 **Τι θα υποβάλλετε**
 
