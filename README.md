@@ -17,7 +17,7 @@
 - `matplotlib`: the folder to maintain code examples for the python library matplotlib that plots graphs, pie charts etc.
 - `pandas`: the folder to maintain code examples for the python library pandas that reads, analyses and filters data from .csv files
 
-## Project 
+# Project 
 **Εισαγωγή**
 
 Η εργασία έχει ως στόχο την ανάλυση μεγάλων δεδομένων και την παρουσίαση των αποτελεσμάτων σας. Η εργασία θα περιλαμβάνει 2 μέρη, το πρώτο μέρος θα είναι συγγραφή μιας αναφοράς 6 σελίδων και ενώ το δεύτερο η δημιουργία κώδικα για την εκτέλεση των πειραμάτων σας.Η ημερομηνία υποβολής της θα είναι η 12η Ιουνίου 2024.
