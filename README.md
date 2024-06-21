@@ -11,7 +11,9 @@
   - `kMeans - Clustering`: similarities between data according to the characteristics found in the data and grouping similar data objects into clusters.
   - `Locality Sensitive Hashing - LSH`: algorithm that efficiently approximates similarity search by reducing the dimensionality of data
   - `Pagerank`: Google algorithm that measures the importance of webpages based on the quality and quantity of links pointing to them
-  - `Recommender Systems`: algorithm to predict and suggest items or content that users may be interested in based on their past behavior, preferences, and similarities with other users. 
+  - `Recommender Systems`: algorithm to predict and suggest items or content that users may be interested in based on their past behavior, preferences, and similarities with other users.
+  - `Random Walk with Restart - PageRank - Personalize PageRank`: [Repository Link](https://github.com/jinhongjung/pyrwr)
+  - `SVD`: Singular value decomposition (SVD) is a matrix factorization method that generalizes the eigendecomposition of a square matrix (n x n) to any matrix (n x m).
 - `matplotlib`: the folder to maintain code examples for the python library matplotlib that plots graphs, pie charts etc.
 - `pandas`: the folder to maintain code examples for the python library pandas that reads, analyses and filters data from .csv files
 
